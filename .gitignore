@@ -1,0 +1,22 @@
+/vendor/
+node_modules/
+npm-debug.log
+yarn-error.log
+
+# Laravel 4 specific
+bootstrap/compiled.php
+app/storage/
+
+/public/storage
+/public/hot
+
+/storage/*.key
+
+.env
+.env.backup
+
+Homestead.json
+Homestead.yaml
+/.vagrant
+
+.phpunit.result.cache
