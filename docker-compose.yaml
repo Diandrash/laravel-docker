@@ -1,9 +1,9 @@
 services:
-  app:
+  phpfpm_app:
     build:
       context: .
       dockerfile: Dockerfile.phpfpm
-    container_name: laravel
+    container_name: phpfpm_laravel
     working_dir: /var/www/html
     volumes:
         - ./:/var/www/html
@@ -11,88 +11,14 @@ services:
       - 9000:9000
     networks:
       - laravel
-    depends_on:
-      - mysql
-    #environment:
-      #APP_NAME: Laravel
-      #APP_ENV: local
-      #APP_KEY: base64:EEfFSxzexX1XJ0HRH1cGEHGfCkHYz1b+4lQB+cp+ETQ=
-      #APP_DEBUG: true
-      #APP_URL: http://localhost
-      #LOG_CHANNEL: stack
-      #DB_CONNECTION: mysql
-      #DB_HOST: mysql
-      #DB_PORT: 3306
-      #DB_DATABASE: laravel
-      #DB_USERNAME: root
-      #DB_PASSWORD: root
-      #BROADCAST_DRIVER: log
-      #CACHE_DRIVER: file
-      #QUEUE_CONNECTION: sync
-      #SESSION_DRIVER: file
-      #SESSION_LIFETIME: 120
-      #REDIS_HOST: 127.0.0.1
-      #REDIS_PASSWORD: null
-      #REDIS_PORT: 6379
 
-  #apache:
-  #  build:
-  #    context: .
-  #    dockerfile: Dockerfile
-  #  container_name: laravel
-  #  working_dir: /var/www/html
-  #  volumes:
-  #      - ./:/var/www/html
-       #- /usr/share/docker/app:/var/www/html
-       #- /usr/share/docker/app/database:/var/www/html/database
-       #- /usr/share/docker/app/storage:/var/www/html/storage
-  #  ports:
-  #    - 80:80
-  #  networks:
-  #    - laravel
-  #  depends_on:
-  #    - mysql
-  #  environment:
-  #    APP_NAME: Laravel
-  #    APP_ENV: local
-  #    APP_KEY: base64:EEfFSxzexX1XJ0HRH1cGEHGfCkHYz1b+4lQB+cp+ETQ=
-  #    APP_DEBUG: true
-  #    APP_URL: http://localhost
-  #    LOG_CHANNEL: stack
-  #    DB_CONNECTION: mysql
-  #    DB_HOST: mysql
-  #    DB_PORT: 3306
-  #    DB_DATABASE: laravel
-  #    DB_USERNAME: root
-  #    DB_PASSWORD: root
-  #    BROADCAST_DRIVER: log
-  #    CACHE_DRIVER: file
-  #    QUEUE_CONNECTION: sync
-  #    SESSION_DRIVER: file
-  #    SESSION_LIFETIME: 120
-  #    REDIS_HOST: 127.0.0.1
-  #    REDIS_PASSWORD: null
-  #    REDIS_PORT: 6379
 
-  mysql:
-    image: mysql:5.7
-    container_name: laravel_mysql
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-      MYSQL_DATABASE: laravel
-      MYSQL_USER: user
-      MYSQL_PASSWORD: secret
-    volumes:
-      - /usr/share/docker/mysql/mysql_data:/var/lib/mysql
-    networks:
-      - laravel
-
-  nginx:
+  phpfpm_nginx:
     image: nginx:alpine
-    container_name: laravel_nginx
+    container_name: phpfpm_nginx
     restart: unless-stopped
-    #depends_on:
-    #  - app
+    depends_on:
+      - phpfpm_app
     ports:
       - 80:80
       - 443:443
@@ -101,9 +27,6 @@ services:
       - ./nginx/conf.d:/etc/nginx/conf.d
     networks:
       - laravel
-
-volumes:
-  mysql_data:
 
 networks:
   laravel:
